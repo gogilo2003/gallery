@@ -2,17 +2,21 @@
     "name": "gogilo/gallery",
     "description": "Photo Gallery for laravel applications",
     "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Ogilo\\Gallery\\": "app/",
-            "files": [
-                "app/Support/helpers.php"
-            ]
-        }
-    },
     "authors": [{
         "name": "Ogilo G.D. Ouma",
         "email": "gogilo2003@hotmail.com"
     }],
+    "autoload": {
+        "psr-4": {
+            "Ogilo\\Gallery\\": "app/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ogilo\\Gallery\\GalleryServiceProvider"
+            ]
+        }
+    },
     "require": {}
 }
