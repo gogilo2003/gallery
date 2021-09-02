@@ -26,9 +26,11 @@
         </div>
       </div>
     </div>
+    <modal></modal>
   </div>
 </template>
 <script>
+import Modal from '../components/Modal.vue';
 import Photo from "../components/Photo.vue";
 export default {
   data() {
@@ -41,7 +43,8 @@ export default {
   components: {
     Photo,
   },
-  methods: {
+  
+    Modalmethods: {
     getAlbums() {
       axios.get("/api/admin/albums?api_token=" + api_token).then((response) => {
         this.albums = response.data;
