@@ -17,8 +17,16 @@ class CreateAlbumPictureTable extends Migration
             $table->id();
             $table->unsignedBigInteger('album_id');
             $table->unsignedInteger('picture_id');
-            $table->foreign('album_id')->references('id')->on('albums');
-            $table->foreign('picture_id')->references('id')->on('pictures');
+            
+            $table->foreign('album_id')
+                ->references('id')
+                ->on('albums')
+                ->onDelete('CASCADE');
+
+            $table->foreign('picture_id')
+                ->references('id')
+                ->on('pictures')
+                ->onDelete('CASCADE');
         });
     }
 

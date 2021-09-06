@@ -27,7 +27,7 @@ class AlbumController extends Controller
             return response()->json($album);
         }
 
-        $albums = Album::all();
+        $albums = Album::with('pictures')->get();
         return response()->json($albums);
     }
 

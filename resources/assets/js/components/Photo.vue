@@ -1,13 +1,17 @@
 <template>
   <div>
-    <div class="card">
-      <div class="card-header card-header-image card-header-primary">
-        <img style="width: 100%" :src="image.picture.url" :alt="image.src" />
+    <card class="card-primary">
+      <div slot="image">
+        <img
+          style="width: 100%"
+          :src="image.picture.url"
+          :alt="image.picture.filename"
+        />
       </div>
       <div class="card-body">
         <div class="card-text">{{ image.caption }}</div>
       </div>
-      <div class="card-footer">
+      <div slot="footer">
         <div>
           <button
             @click="editPicture"
@@ -16,83 +20,49 @@
             <span class="material-icons">edit</span>
           </button>
           <button
-            @click="deletePicture"
+            @click="deletePicture(image.id)"
             class="btn btn-fab btn-danger btn-round"
           >
             <span class="material-icons">delete</span>
           </button>
         </div>
       </div>
-    </div>
-    <modal :show="edit">
-      <template>
-        <h4 class="text-uppercase">Edit Picture</h4>
-      </template>
-      <template>
-          <div>
-            <img id="image" src="/vendor/admin/img/placeholder.png" />
-          </div>
-          <div class="form-group">
-            <input
-              type="text"
-              class="form-control"
-              name="title"
-              id="title"
-              aria-describedby="titleHelpId"
-              placeholder="Title"
-            />
-            <small id="titleHelpId" class="form-text text-muted"
-              >Enter Title</small
-            >
-          </div>
-      </template>
-      <template slot="footer">
-        <button class="btn btn-danger" @click="edit = false">Close</button>
-        <button
-          :loading="loading"
-          class="btn btn-primary"
-          @click="savePicture()"
-        >
-          Save changes
-        </button>
-      </template>
-    </modal>
+    </card>
   </div>
 </template>
 <script>
 import Card from "./Cards/Card.vue";
-import Modal from "../components/Modal.vue";
 export default {
   props: {
     image: {
-      src: "image.png",
+      picture: { original: "/vendor/admin/img/placeholde.png" },
       caption: "",
     },
   },
   data() {
-    return {
-      edit: false,
-      delete: false,
-      loading: false,
-    };
+    return {};
   },
   methods: {
     editPicture() {
-      this.edit = true;
+      this.$emit("edit", this.image);
     },
-    deletePicture() {
-      alert("DELETE");
+    deletePicture(id) {
+      let myParams = { api_token, id };
+
+      let data = new URLSearchParams(myParams).toString();
+
+      axios
+        .delete(`/api/admin/pictures?${data}`)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
     },
   },
   components: {
-    Modal,
     Card,
   },
 };
 </script>
-
-<style scoped>
-#image {
-  max-width: 100%;
-}
-</style>

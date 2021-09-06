@@ -15,7 +15,7 @@ Route::group(['middleware'=>'api','as'=>'api','prefix'=>'api','namespace'=>'Ogil
 		Route::group(['as'=>'-pictures','prefix'=>'pictures'],function(){
 			Route::get('{id?}',['as'=>'','uses'=>'PictureController@index']);
 			Route::post('',['as'=>'-create','uses'=>'PictureController@create']);
-			Route::patch('',['as'=>'-update','uses'=>'PictureController@update']);
+			Route::post('update',['as'=>'-update','uses'=>'PictureController@update']);
 			Route::delete('',['as'=>'-delete','uses'=>'PictureController@delete']);
 		});
 

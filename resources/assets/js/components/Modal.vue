@@ -1,126 +1,60 @@
 <template>
   <div
-    class="modal fade"
     @click.self="closeModal"
+    class="modal fade"
     :class="[
       { 'show d-block': show },
       { 'd-none': !show },
-      { 'modal-mini': type === 'mini' },
+      { backdrop: backdrop },
     ]"
-    v-show="show"
-    tabindex="-1"
-    role="dialog"
-    :aria-hidden="!show"
   >
     <div
       class="modal-dialog"
       :class="[
-        { 'modal-notice': type === 'notice' },
+        { 'modal-xl': size === 'xl' },
+        { 'modal-lg': size === 'lg' },
+        { 'modal-sm': size === 'sm' },
         { 'modal-dialog-centered': centered },
-        modalClasses,
+        { 'modal-dialog-scrollable': scrollable },
       ]"
     >
-      <div
-        class="modal-content"
-        :class="[
-          gradient ? `bg-gradient-${gradient}` : '',
-          modalContentClasses,
-        ]"
-      >
-        <div class="card">
-          <div
-            class="card-header"
-            :class="[headerClasses]"
-            v-if="$slots.header"
-          >
-            <slot name="header"></slot>
-            <slot name="close-button">
-              <button
-                type="button"
-                class="close"
-                v-if="showClose"
-                @click="closeModal"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <i class="tim-icons icon-simple-remove"></i>
-              </button>
-            </slot>
-          </div>
-
-          <div v-if="$slots.default" class="card-body" :class="bodyClasses">
-            <slot></slot>
-          </div>
-
-          <div class="card-footer" :class="footerClasses" v-if="$slots.footer">
-            <slot name="footer"></slot>
-          </div>
-        </div>
+      <div class="modal-content">
+        <slot></slot>
       </div>
     </div>
   </div>
 </template>
 <script>
-// import { SlideYUpTransition } from "vue2-transitions";
-
 export default {
   name: "modal",
-  components: {
-    // SlideYUpTransition
-  },
   props: {
-    show: Boolean,
-    showClose: {
+    show: {
       type: Boolean,
-      default: true,
+      default: false,
+    },
+    size: {
+      type: String,
+      default: "",
     },
     centered: {
       type: Boolean,
       default: true,
     },
-    type: {
-      type: String,
-      default: "",
-      validator(value) {
-        let acceptedValues = ["", "notice", "mini"];
-        return acceptedValues.indexOf(value) !== -1;
-      },
-      description: 'Modal type (notice|mini|"") ',
+    scrollable: {
+      type: Boolean,
+      default: true,
     },
-    modalClasses: {
-      type: [Object, String],
-      description: "Modal dialog css classes",
-    },
-    modalContentClasses: {
-      type: [Object, String],
-      description: "Modal dialog content css classes",
-    },
-    gradient: {
-      type: String,
-      description: "Modal gradient type (danger, primary etc)",
-    },
-    headerClasses: {
-      type: [Object, String],
-      description: "Modal Header css classes",
-    },
-    bodyClasses: {
-      type: [Object, String],
-      description: "Modal Body css classes",
-    },
-    footerClasses: {
-      type: [Object, String],
-      description: "Modal Footer css classes",
-    },
-    animationDuration: {
-      type: Number,
-      default: 500,
-      description: "Modal transition duration",
+    backdrop: {
+      type: Boolean,
+      default: true,
     },
   },
   methods: {
     closeModal() {
-      this.$emit("update:show", false);
-      this.$emit("close");
+      if (!this.backdrop) {
+        this.$emit("update:show", false);
+        this.$emit("close");
+      }
     },
   },
   watch: {
@@ -135,8 +69,25 @@ export default {
   },
 };
 </script>
-<style>
-.modal.show {
-  background-color: rgba(0, 0, 0, 0.3);
+
+<style scoped>
+.backdrop {
+  background-color: rgba(0, 0, 0, 0.35);
+}
+.modal-dialog {
+  max-width: 500px;
+}
+.modal-dialog.modal-sm {
+  max-width: 300px;
+}
+.modal-dialog.modal-lg {
+  max-width: 800px;
+}
+.modal-dialog.modal-xl {
+  max-width: 1140px;
+}
+.modal-dialog-scrollable .modal-content .modal-body, .modal-dialog-scrollable .modal-content .card-body .card-body{
+  max-height: 500px;
+  overflow-y: auto;
 }
 </style>

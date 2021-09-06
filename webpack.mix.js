@@ -12,8 +12,10 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/assets/js/gallery.js', 'public/js')
+    .js('resources/assets/js/front.js', 'public/js')
     .vue()
-    .sass('resources/assets/scss/gallery.scss', 'public/css');
+    .sass('resources/assets/scss/gallery.scss', 'public/css')
+    .sass('resources/assets/scss/front.scss', 'public/css');
 
 // .postCss('resources/assets/css/gallery.css', 'public/css', [
 //     //
