@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Ogilo\Gallery\Models\Album;
 
 Route::group(['middleware'=>'api','as'=>'api','prefix'=>'api','namespace'=>'Ogilo\Gallery\Http\Controllers\Api\V1'],function(){
 
@@ -19,6 +20,13 @@ Route::group(['middleware'=>'api','as'=>'api','prefix'=>'api','namespace'=>'Ogil
 			Route::delete('',['as'=>'-delete','uses'=>'PictureController@delete']);
 		});
 
+	});
+	// api/gallery/albums
+	Route::prefix('gallery')->name('-gallery')->group(function () {
+		Route::get('albums', function () {
+			$albums = Album::all();
+			return response()->json($albums,200);
+		})->name('-albums');
 	});
 
 });
