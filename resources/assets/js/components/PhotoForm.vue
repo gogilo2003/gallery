@@ -208,9 +208,7 @@ export default {
     photo(val) {
       this.item = val;
       if (this.item.albums) {
-        this.selectedAlbums = this.item.albums.map((album) => {
-          return album.id;
-        });
+        this.selectedAlbums = this.item.albums.map((album) => album.id);
       }
       if (val.picture) {
         this.imgSrc = val.picture.url;

@@ -33,7 +33,7 @@ class PictureController extends Controller
 
         $cat = PictureCategory::where('name', 'gallery')->first();
         
-        $pictures = Picture::where('picture_category_id', $cat->id)->get();
+        $pictures = Picture::with('albums')->where('picture_category_id', $cat->id)->get();
         return response()->json($pictures);
     }
 

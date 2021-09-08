@@ -122,7 +122,6 @@ export default {
       await this.$refs.photoForm
         .save()
         .then((response) => {
-          console.log(response.data);
           if (response.data.success) {
             if (!this.edit) {
               this.photos.unshift(response.data.picture);
