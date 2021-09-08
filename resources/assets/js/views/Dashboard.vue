@@ -1,9 +1,6 @@
 <template>
   <div>
     <h5 class="text-uppercase">{{ message }}</h5>
-    <button class="btn btn-primary btn-round" @click="addPicture">
-      ADD Picture
-    </button>
     <div class="row">
       <div class="col-md-3 col-lg-3">
         <albums
@@ -13,6 +10,9 @@
         />
       </div>
       <div class="col-md-9 col-lg-9">
+        <button class="btn btn-primary btn-round" @click="addPicture">
+          ADD Picture
+        </button>
         <div class="row">
           <div
             v-for="(image, index) in photos"
