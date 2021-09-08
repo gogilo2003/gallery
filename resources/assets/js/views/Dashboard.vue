@@ -124,7 +124,7 @@ export default {
         .then((response) => {
           console.log(response.data);
           if (response.data.success) {
-            if (this.edit) {
+            if (!this.edit) {
               this.photos.unshift(response.data.picture);
             }
             this.edit = false;
