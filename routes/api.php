@@ -18,6 +18,7 @@ Route::group(['middleware' => 'api', 'as' => 'api', 'prefix' => 'api', 'namespac
 			Route::post('', ['as' => '-create', 'uses' => 'PictureController@create']);
 			Route::post('update', ['as' => '-update', 'uses' => 'PictureController@update']);
 			Route::delete('', ['as' => '-delete', 'uses' => 'PictureController@delete']);
+			Route::post('publish', ['as' => '-publish', 'uses' => 'PictureController@publish']);
 		});
 	});
 

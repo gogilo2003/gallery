@@ -19,7 +19,11 @@
             :key="index"
             class="col-md-6 col-lg-6 d-flex"
           >
-            <photo :image="image" @edit="editPicture"></photo>
+            <photo
+              :image="image"
+              @edit="editPicture"
+              @published="published"
+            ></photo>
           </div>
         </div>
       </div>
@@ -61,6 +65,7 @@ import Photo from "../components/Photo.vue";
 import PhotoForm from "../components/PhotoForm.vue";
 import Albums from "../components/Albums.vue";
 import Card from "../components/Cards/Card.vue";
+
 export default {
   data() {
     return {
@@ -140,6 +145,13 @@ export default {
     },
     newAlbum(album) {
       this.albums.unshift(album);
+    },
+    published(photo) {
+      this.photos.forEach((item, index) => {
+        if (item.id === photo.id) {
+          this.photos[index].published = photo.published;
+        }
+      });
     },
   },
 };

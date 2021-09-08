@@ -25,6 +25,13 @@
           >
             <span class="material-icons">delete</span>
           </button>
+          <button
+            @click="publishPicture(image.id)"
+            class="btn btn-fab btn-info btn-round"
+          >
+            <span class="material-icons" v-if="image.published">visibility_off</span>
+            <span class="material-icons" v-else>visibility</span>
+          </button>
         </div>
       </div>
     </card>
@@ -59,6 +66,29 @@ export default {
         .catch((error) => {
           console.log(error.message);
         });
+    },
+    publishPicture(id) {
+      axios
+        .post(
+          "/api/admin/pictures/publish",
+          { id, api_token },
+          {
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          if (response.data.success) {
+            this.$emit("published", response.data.picture);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    status(value){
+      return value ? 'visibility_off' : 'visibility'
     },
   },
   components: {

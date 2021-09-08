@@ -32,7 +32,7 @@ class PictureController extends Controller
         }
 
         $cat = PictureCategory::where('name', 'gallery')->first();
-        
+
         $pictures = Picture::with('albums')->where('picture_category_id', $cat->id)->get();
         return response()->json($pictures);
     }
@@ -133,7 +133,7 @@ class PictureController extends Controller
 
         if ($request->hasFile('picture')) {
 
-            return response()->json($request->all(),500);
+            return response()->json($request->all(), 500);
 
             $filename = $picture->name ? $picture->name : time() . '.jpg';
             $dir = public_path('images/pictures');
@@ -207,5 +207,29 @@ class PictureController extends Controller
         $picture->delete();
 
         return response()->json(['success' => true, 'message' => 'Picture deleted'], 204);
+    }
+
+    public function publish(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|exists:pictures'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation Error',
+                'details' => $validator->errors()
+            ], 422);
+        }
+
+        $picture = Picture::find($request->id);
+        $picture->published = $picture->published ? 0 : 1;
+        $picture->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Picture ' . ($picture->published ? 'Published' : 'Unpublished'),
+            'picture' => $picture
+        ], 202);
     }
 }

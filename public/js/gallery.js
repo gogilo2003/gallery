@@ -2233,6 +2233,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
@@ -2261,6 +2268,27 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         console.log(error.message);
       });
+    },
+    publishPicture: function publishPicture(id) {
+      var _this = this;
+
+      axios.post("/api/admin/pictures/publish", {
+        id: id,
+        api_token: api_token
+      }, {
+        headers: {
+          Accept: "application/json"
+        }
+      }).then(function (response) {
+        if (response.data.success) {
+          _this.$emit("published", response.data.picture);
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    status: function status(value) {
+      return value ? 'visibility_off' : 'visibility';
     }
   },
   components: {
@@ -2635,6 +2663,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -2732,6 +2764,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     newAlbum: function newAlbum(album) {
       this.albums.unshift(album);
+    },
+    published: function published(photo) {
+      var _this2 = this;
+
+      this.photos.forEach(function (item, index) {
+        if (item.id === photo.id) {
+          _this2.photos[index].published = photo.published;
+        }
+      });
     }
   }
 });
@@ -26411,6 +26452,27 @@ var render = function() {
                   _vm._v("delete")
                 ])
               ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-fab btn-info btn-round",
+                on: {
+                  click: function($event) {
+                    return _vm.publishPicture(_vm.image.id)
+                  }
+                }
+              },
+              [
+                _vm.image.published
+                  ? _c("span", { staticClass: "material-icons" }, [
+                      _vm._v("visibility_off")
+                    ])
+                  : _c("span", { staticClass: "material-icons" }, [
+                      _vm._v("visibility")
+                    ])
+              ]
             )
           ])
         ])
@@ -26707,7 +26769,7 @@ var render = function() {
                 [
                   _c("photo", {
                     attrs: { image: image },
-                    on: { edit: _vm.editPicture }
+                    on: { edit: _vm.editPicture, published: _vm.published }
                   })
                 ],
                 1
