@@ -181,6 +181,8 @@ class PictureController extends Controller
 
         $picture->save();
 
+        $albums = is_null($request->albums) ? null : (is_array($request->albums) ? $request->albums : explode(',',$request->albums));
+
         $picture->albums()->sync($request->albums);
 
         return response()->json([
