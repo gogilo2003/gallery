@@ -25,14 +25,12 @@ Route::group(['middleware' => 'api', 'as' => 'api', 'prefix' => 'api', 'namespac
 		->name('-gallery')
 		->group(function () {
 			Route::get('albums', function () {
-				$albums = Album::with(['pictures'=>function($query){
-					return $query->limit(4);
-				}]);
+				$albums = Album::get();
 				return response()->json($albums, 200);
 			})->name('-albums');
 
 			Route::get('pictures/{id?}', function ($id) {
-				$pictures = Album::where('published', 1);
+				$pictures = Album::where('published', 1)->paginate(4);
 				return response()->json($pictures, 200);
 			})->name('-pictures');
 		});
