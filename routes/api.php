@@ -29,7 +29,7 @@ Route::group(['middleware' => 'api', 'as' => 'api', 'prefix' => 'api', 'namespac
 				return response()->json($albums, 200);
 			})->name('-albums');
 
-			Route::get('pictures/{id?}', function ($id) {
+			Route::get('pictures/{id?}', function ($id=null) {
 				$pictures = Album::where('published', 1)->paginate(4);
 				return response()->json($pictures, 200);
 			})->name('-pictures');
