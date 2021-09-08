@@ -128,7 +128,13 @@ export default {
         .save()
         .then((response) => {
           if (response.data.success) {
-            if (!this.edit) {
+            if (this.edit) {
+              this.photos.forEach((item) => {
+                if(item.id === response.data.picture.id){
+                  this.photos[index]=response.data.picture
+                }
+              });
+            } else {
               this.photos.unshift(response.data.picture);
             }
             this.edit = false;

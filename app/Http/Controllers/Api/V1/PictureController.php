@@ -183,7 +183,10 @@ class PictureController extends Controller
 
         $albums = is_null($request->albums) ? null : (is_array($request->albums) ? $request->albums : explode(',',$request->albums));
 
-        $picture->albums()->sync($request->albums);
+        if(!is_null($albums)){
+            $picture->albums()->sync($albums);
+        }
+        $picture->load('albums');
 
         return response()->json([
             'success' => true,

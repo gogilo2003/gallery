@@ -2739,7 +2739,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.next = 2;
                 return _this.$refs.photoForm.save().then(function (response) {
                   if (response.data.success) {
-                    if (!_this.edit) {
+                    if (_this.edit) {
+                      _this.photos.forEach(function (item) {
+                        if (item.id === response.data.picture.id) {
+                          _this.photos[index] = response.data.picture;
+                        }
+                      });
+                    } else {
                       _this.photos.unshift(response.data.picture);
                     }
 
