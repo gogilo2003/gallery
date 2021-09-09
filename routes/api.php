@@ -32,7 +32,14 @@ Route::group(['middleware' => 'api', 'as' => 'api', 'prefix' => 'api', 'namespac
             })->name('-albums');
 
             Route::get('pictures/{id?}', function ($id = null) {
-                $pictures = Picture::paginate(4);
+                $pictures = [];
+                if ($id) {
+                    $album = Album::with(['pictures' => function (Illuminate\Database\Schema\Blueprint $query) {
+                        return $query->where('published', 1);
+                    }])->find($id);
+                } else {
+                    $pictures = Picture::where('published', 1)->paginate(4);
+                }
 
                 return response()->json($pictures, 200);
             })->name('-pictures');
