@@ -196,12 +196,12 @@ export default {
         .post("/api/admin/albums", { api_token, title: option.title })
         .then((response) => {
           album = response.data.album;
+          this.selectedAlbums[this.selectedAlbums.length-1] = response.data.album.id;
         });
       this.$emit("created:album", album);
     },
     createOption(album) {
       return { id: null, title: album, description: "" };
-      // console.log(album)
     },
   },
   watch: {

@@ -129,9 +129,9 @@ export default {
         .then((response) => {
           if (response.data.success) {
             if (this.edit) {
-              this.photos.forEach((item) => {
-                if(item.id === response.data.picture.id){
-                  this.photos[index]=response.data.picture
+              this.photos.forEach((item,index) => {
+                if (item.id === response.data.picture.id) {
+                  this.photos[index] = response.data.picture;
                 }
               });
             } else {
