@@ -37,7 +37,7 @@ Route::group(['middleware' => 'api', 'as' => 'api', 'prefix' => 'api', 'namespac
                 if ($id) {
                     $pictures = Picture::where('published')
                     ->whereHas('albums', function (Builder $query) use ($id) {
-                        $query->where('albums.id', $id);
+                        $query->where('album_id', $id);
                     })->paginate(4);
                 } else {
                     $pictures = Picture::where('published', 1)->paginate(4);
