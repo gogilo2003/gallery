@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Route;
 use Ogilo\Gallery\Models\Album;
 use Ogilo\Gallery\Models\Picture;
@@ -34,9 +35,10 @@ Route::group(['middleware' => 'api', 'as' => 'api', 'prefix' => 'api', 'namespac
             Route::get('pictures/{id?}', function ($id = null) {
                 $pictures = [];
                 if ($id) {
-                    $album = Album::with(['pictures' => function (Illuminate\Database\Schema\Blueprint $query) {
-                        return $query->where('published', 1);
-                    }])->find($id);
+                    $pictures = Picture::where('published')
+                    ->whereHas('albums', function (Builder $query) use ($id) {
+                        $query->where('albums.id', $id);
+                    })->paginate(4);
                 } else {
                     $pictures = Picture::where('published', 1)->paginate(4);
                 }
