@@ -31,7 +31,7 @@ Route::group(['middleware' => 'api', 'as' => 'api', 'prefix' => 'api', 'namespac
             })->name('-albums');
 
             Route::get('pictures/{id?}', function ($id = null) {
-                $pictures = Album::paginate(4);
+                $pictures = Picture::paginate(4);
 
                 return response()->json($pictures, 200);
             })->name('-pictures');
