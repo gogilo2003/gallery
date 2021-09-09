@@ -23,6 +23,7 @@
               :image="image"
               @edit="editPicture"
               @published="published"
+              @deleted="deleted"
             ></photo>
           </div>
         </div>
@@ -159,6 +160,18 @@ export default {
         }
       });
     },
+    deleted(id){
+        let a = []
+        this.albums.forEach((album,index)=>{
+            let pictures = album.pictures.filter(item=>{
+                return item.id !== id
+            })
+            album.pictures = pictures
+            a[index] = album
+        })
+
+        this.albums = a
+    }
   },
 };
 </script>

@@ -2887,6 +2887,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 
@@ -2999,6 +3000,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           _this2.photos[index].published = photo.published;
         }
       });
+    },
+    deleted: function deleted(id) {
+      var a = [];
+      this.albums.forEach(function (album, index) {
+        var pictures = album.pictures.filter(function (item) {
+          return item.id !== id;
+        });
+        album.pictures = pictures;
+        a[index] = album;
+      });
+      this.albums = a;
     }
   }
 });
@@ -26982,7 +26994,11 @@ var render = function() {
                 [
                   _c("photo", {
                     attrs: { image: image },
-                    on: { edit: _vm.editPicture, published: _vm.published }
+                    on: {
+                      edit: _vm.editPicture,
+                      published: _vm.published,
+                      deleted: _vm.deleted
+                    }
                   })
                 ],
                 1
