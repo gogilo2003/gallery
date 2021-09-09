@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Ogilo\Gallery\Models\Album;
+use Ogilo\Gallery\Models\Picture;
 
 Route::group(['middleware' => 'api', 'as' => 'api', 'prefix' => 'api', 'namespace' => 'Ogilo\Gallery\Http\Controllers\Api\V1'], function () {
     Route::group(['middleware' => 'auth:api', 'as' => '-admin', 'prefix' => 'admin'], function () {
