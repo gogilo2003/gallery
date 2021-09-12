@@ -18,7 +18,7 @@
           <div
             v-for="(image, index) in photos"
             :key="index"
-            class="col-md-6 col-lg-6 d-flex"
+            class="col-md-6 col-lg-4 d-flex"
           >
             <photo
               :image="image"
