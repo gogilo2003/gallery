@@ -1,6 +1,6 @@
 <template>
   <div>
-    <loader :loading.sync="loading" :text="progress+'%'"/>
+    <loader :loading.sync="loading" :text="progress + '%'" />
     <h5 class="text-uppercase">{{ message }}</h5>
     <div class="row">
       <div class="col-md-3 col-lg-3">
@@ -152,8 +152,26 @@ export default {
           this.loading = false;
         })
         .catch((error) => {
-          console.log(error.message);
-          this.loading = false
+          let response = error.response;
+          if (response.status == 422) {
+            let title = response.data.message;
+            let details = "<ul>";
+            for (var item in response.data.details) {
+              details += `<li>${response.data.details[item]}</li>`;
+            }
+            details += "</ul>";
+            $.notify(
+              {
+                title: title,
+                message: details,
+              },
+              {
+                type: "danger",
+                z_index: 9999,
+              }
+            );
+          }
+          this.loading = false;
         });
     },
     updateAlbums(albums) {
