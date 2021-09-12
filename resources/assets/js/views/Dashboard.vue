@@ -153,6 +153,7 @@ export default {
         })
         .catch((error) => {
           console.log(error.message);
+          this.loading = false
         });
     },
     updateAlbums(albums) {
