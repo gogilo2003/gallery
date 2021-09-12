@@ -157,8 +157,7 @@ export default {
           let progress = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
           );
-          console.log(progress)
-          this.$emit("updated:progress", progress);
+          this.$emit("update:progress", progress);
         },
         headers: {
           "Content-Type": "multipart/form-data",
