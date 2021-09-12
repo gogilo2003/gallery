@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loader :loading.sync="loading" :text="progress+'%'"/>
     <h5 class="text-uppercase">{{ message }}</h5>
     <div class="row">
       <div class="col-md-3 col-lg-3">
@@ -48,6 +49,7 @@
             :photo="photo"
             :edit.sync="edit"
             @created:album="newAlbum"
+            :progress.sync="progress"
           />
         </template>
         <template slot="footer">
@@ -66,13 +68,16 @@ import Photo from "../components/Photo.vue";
 import PhotoForm from "../components/PhotoForm.vue";
 import Albums from "../components/Albums.vue";
 import Card from "../components/Cards/Card.vue";
+import Loader from "../components/Loader.vue";
 
 export default {
   data() {
     return {
       message: "Photo Gallery",
+      loading: false,
       photos: [],
       albums: [],
+      progress: 0,
       photo: {
         picture: {
           original: "/vendor/admin/img/placeholder.png",
@@ -108,6 +113,7 @@ export default {
     Modal,
     Albums,
     Card,
+    Loader,
   },
   methods: {
     addPicture() {
@@ -125,12 +131,13 @@ export default {
       this.photos = pictures;
     },
     async savePhoto() {
+      this.loading = true;
       await this.$refs.photoForm
         .save()
         .then((response) => {
           if (response.data.success) {
             if (this.edit) {
-              this.photos.forEach((item,index) => {
+              this.photos.forEach((item, index) => {
                 if (item.id === response.data.picture.id) {
                   this.photos[index] = response.data.picture;
                 }
@@ -142,6 +149,7 @@ export default {
             this.photo = this.emptyPhoto;
             this.dialog.show = false;
           }
+          this.loading = false;
         })
         .catch((error) => {
           console.log(error.message);
@@ -160,18 +168,19 @@ export default {
         }
       });
     },
-    deleted(id){
-        let a = []
-        this.albums.forEach((album,index)=>{
-            let pictures = album.pictures.filter(item=>{
-                return item.id !== id
-            })
-            album.pictures = pictures
-            a[index] = album
-        })
+    deleted(id) {
+      let a = [];
+      this.albums.forEach((album, index) => {
+        let pictures = album.pictures.filter((item) => {
+          return item.id !== id;
+        });
+        album.pictures = pictures;
+        a[index] = album;
+      });
 
-        this.albums = a
-    }
+      this.albums = a;
+    },
   },
 };
 </script>
+

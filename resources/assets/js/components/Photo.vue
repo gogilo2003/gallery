@@ -36,6 +36,7 @@
 </template>
 <script>
 import Card from "./Cards/Card.vue";
+const qs = require('qs')
 export default {
   props: {
     image: {
@@ -53,7 +54,7 @@ export default {
     deletePicture(id) {
       let myParams = { api_token, id };
 
-      let data = new URLSearchParams(myParams).toString();
+      let data = qs.stringify(myParams);
 
       axios
         .delete(`/api/admin/pictures?${data}`)

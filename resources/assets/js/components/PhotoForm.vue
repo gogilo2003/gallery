@@ -106,12 +106,16 @@ export default {
       required: true,
     },
     edit: {
-      Type: Boolean,
+      type: Boolean,
       default: false,
     },
     albums: {
       type: Array,
       default: [],
+    },
+    progress: {
+      type: Number,
+      default: 0,
     },
   },
   data() {
@@ -148,19 +152,23 @@ export default {
       formData.append("image_cropdetails", image_cropdetails);
       formData.append("api_token", api_token);
 
+      let config = {
+        onUploadProgress: (progressEvent) => {
+          let progress = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          this.$emit("updated:progress", progress);
+        },
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
       if (this.edit) {
         formData.append("id", this.photo.id);
-        return axios.post("/api/admin/pictures/update", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        return axios.post("/api/admin/pictures/update", config);
       } else {
-        return axios.post("/api/admin/pictures", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        return axios.post("/api/admin/pictures", formData, config);
       }
     },
     changePicture(event) {
@@ -196,7 +204,8 @@ export default {
         .post("/api/admin/albums", { api_token, title: option.title })
         .then((response) => {
           album = response.data.album;
-          this.selectedAlbums[this.selectedAlbums.length-1] = response.data.album.id;
+          this.selectedAlbums[this.selectedAlbums.length - 1] =
+            response.data.album.id;
         });
       this.$emit("created:album", album);
     },

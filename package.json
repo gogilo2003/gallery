@@ -10,6 +10,7 @@
         "production": "mix --production"
     },
     "dependencies": {
+        "qs": "^6.10.1",
         "vue": "^2.6.14",
         "vue-cropperjs": "^4.2.0",
         "vue-fancybox": "^1.0.3",
