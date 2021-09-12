@@ -166,7 +166,7 @@ export default {
 
       if (this.edit) {
         formData.append("id", this.photo.id);
-        return axios.post("/api/admin/pictures/update", config);
+        return axios.post("/api/admin/pictures/update", formData, config);
       } else {
         return axios.post("/api/admin/pictures", formData, config);
       }
